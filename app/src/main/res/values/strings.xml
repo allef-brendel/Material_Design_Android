@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Material_Design</string>
+
+    <string name="text">Projeto Material Design Toolbar</string>
+    <string name="action_settings">Configurações</string>
+    <string name="title_activity_second">Toolbar 2</string>
+    <string name="action_second_activity">Toolbar 2</string>
+    <string name="action_facebook">Facebook</string>
+    <string name="action_youtube">YouTube</string>
+    <string name="action_google_plus">Google Plus</string>
+    <string name="action_linkedin">LinkedIn</string>
+    <string name="action_whatsapp">WhatsApp</string>
+</resources>
