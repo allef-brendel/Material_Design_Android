@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey"
-    tools:context=".MainActivity">
+    tools:context=".interfaces.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_main"
@@ -15,6 +15,15 @@
         android:layout_alignParentLeft="true"
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <RelativeLayout
+        android:id="@+id/rl_fragment_container"
+        android:layout_below="@+id/tb_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/inc_tb_bottom">
+
+    </RelativeLayout>
 
     <include
         android:id="@+id/inc_tb_bottom"

@@ -1,19 +1,25 @@
-package com.example.macaxeiratec;
+package com.example.macaxeiratec.interfaces;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import com.example.macaxeiratec.R;
+import com.example.macaxeiratec.domain.Personagens;
+import com.example.macaxeiratec.fragments.PersonagensFragments;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class SecondActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
+
     private Toolbar mToolbar;
     private Toolbar mToolbarBottom;
 
@@ -21,12 +27,13 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_main);
 
         mToolbar = findViewById(R.id.tb_main);
-        mToolbar.setTitle("Toolbar com Elevation");
+        mToolbar.setTitle("Toolbar");
+        mToolbar.setSubtitle("Fisrt Toolbar");
+        mToolbar.setLogo(R.drawable.ic_launcher_foreground);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mToolbarBottom = findViewById(R.id.inc_tb_bottom);
         mToolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -56,7 +63,6 @@ public class SecondActivity extends AppCompatActivity {
                         it.setData(Uri.parse("http://www.whatsapp.com"));
                         break;
                 }
-
                 startActivity(it);
                 return true;
             }
@@ -66,37 +72,50 @@ public class SecondActivity extends AppCompatActivity {
         mToolbarBottom.findViewById(R.id.iv_settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SecondActivity.this, "Botão Configurações Precionado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Botão Configurações Precionado", Toast.LENGTH_SHORT).show();
             }
         });
-    }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            mToolbar.setBackgroundResource(R.drawable.toolbar_rounded_corners);
+        //  FRAGMENT
+        PersonagensFragments frag = (PersonagensFragments) getSupportFragmentManager().findFragmentByTag("person_frag");
+        if (frag == null){
+            frag = new PersonagensFragments();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.rl_fragment_container,frag,"person_frag");
+            ft.commit();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_second, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == android.R.id.home){
-            finish();
+        if(id == R.id.action_second_activity){
+            startActivity(new Intent(this, SecondActivity.class));
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
+
+    public List<Personagens> getSetPersonagensList(int quant){
+        String[] nome = new String[]{"Naruto Uzumaki","Sasuke Uchiha","Sakura Haruno ","Kakashi Hatake","Shikamaru Nara","Sai Yamanaka","Ino Yamanaka","Maito Gai","Itachi Uchiha","Orochimaru"};
+        String[] clan = new String[]{"Uzumaki","Uchiha","Uchiha","Hatake","Nara"," Yamanaka","Yamanaka","Maito","Uchiha","Desconhecido"};
+        int[] fotos = new int[]{R.drawable.naruto_foto,R.drawable.sasuke_foto,R.drawable.sakura_foto,R.drawable.kakashi_foto,R.drawable.shikamaru_foto,R.drawable.sai_foto,R.drawable.ino_foto,R.drawable.gai_foto,R.drawable.itachi_foto};
+        List<Personagens> listAux = new ArrayList<>();
+
+        for (int i = 0; i < quant; i++){
+            Personagens personagens = new Personagens(nome[i % nome.length], clan[i % clan.length], fotos[i % nome.length]);
+            listAux.add(personagens);
+        }
+        return listAux;
+
+    }
+
 }
 

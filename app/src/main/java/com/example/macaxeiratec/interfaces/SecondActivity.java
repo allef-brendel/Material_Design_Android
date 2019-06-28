@@ -1,7 +1,9 @@
-package com.example.macaxeiratec;
+package com.example.macaxeiratec.interfaces;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,9 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.macaxeiratec.R;
 
-public class MainActivity extends AppCompatActivity {
 
+public class SecondActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private Toolbar mToolbarBottom;
 
@@ -20,15 +23,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_second);
 
-        mToolbar = (Toolbar) findViewById(R.id.tb_main);
-        mToolbar.setTitle("Toolbar");
-        mToolbar.setSubtitle("Fisrt Toolbar");
-        mToolbar.setLogo(R.drawable.ic_launcher_foreground);
+        mToolbar = findViewById(R.id.tb_main);
+        mToolbar.setTitle("Toolbar com Elevation");
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mToolbarBottom = (Toolbar) findViewById(R.id.inc_tb_bottom);
+        mToolbarBottom = findViewById(R.id.inc_tb_bottom);
         mToolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -66,15 +68,24 @@ public class MainActivity extends AppCompatActivity {
         mToolbarBottom.findViewById(R.id.iv_settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Botão Configurações Precionado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SecondActivity.this, "Botão Configurações Precionado", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            mToolbar.setBackgroundResource(R.drawable.toolbar_rounded_corners);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_second, menu);
         return true;
     }
 
@@ -83,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.action_second_activity){
-            startActivity(new Intent(this, SecondActivity.class));
+        if(id == android.R.id.home){
+            finish();
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }
 
