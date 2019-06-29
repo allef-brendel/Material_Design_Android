@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mToolbar = findViewById(R.id.tb_main);
-        mToolbar.setTitle("Toolbar");
-        mToolbar.setSubtitle("Fisrt Toolbar");
-        mToolbar.setLogo(R.drawable.ic_launcher_foreground);
+        mToolbar.setTitle("Konoha");
+        mToolbar.setSubtitle("Descrição dos ninjas");
+        mToolbar.setLogo(R.drawable.konoha_simbolo);
         setSupportActionBar(mToolbar);
 
         mToolbarBottom = findViewById(R.id.inc_tb_bottom);
@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
     public List<Personagens> getSetPersonagensList(int quant){
         String[] nome = new String[]{"Naruto Uzumaki","Sasuke Uchiha","Sakura Haruno ","Kakashi Hatake","Shikamaru Nara","Sai Yamanaka","Ino Yamanaka","Maito Gai","Itachi Uchiha","Orochimaru"};
-        String[] clan = new String[]{"Uzumaki","Uchiha","Uchiha","Hatake","Nara"," Yamanaka","Yamanaka","Maito","Uchiha","Desconhecido"};
-        int[] fotos = new int[]{R.drawable.naruto_foto,R.drawable.sasuke_foto,R.drawable.sakura_foto,R.drawable.kakashi_foto,R.drawable.shikamaru_foto,R.drawable.sai_foto,R.drawable.ino_foto,R.drawable.gai_foto,R.drawable.itachi_foto};
+        String[] clan = new String[]{"Uzumaki","Uchiha","Uchiha","Hatake","Nara","Yamanaka","Yamanaka","Maito","Uchiha","Desconhecido"};
+        int[] fotos = new int[]{R.drawable.naruto_foto,R.drawable.sasuke_foto,R.drawable.sakura_foto,R.drawable.kakashi_foto,R.drawable.shikamaru_foto,R.drawable.sai_foto,R.drawable.ino_foto,R.drawable.gai_foto,R.drawable.itachi_foto,R.drawable.orochimaru_foto};
         List<Personagens> listAux = new ArrayList<>();
 
         for (int i = 0; i < quant; i++){
