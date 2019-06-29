@@ -7,7 +7,7 @@
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
     android:minHeight="?attr/actionBarSize"
-    app:theme="@style/Theme.MyThemeBottom">
+    app:theme="@style/ThemeOverlay.AppCompat.Light">
 
     <ImageView
         android:id="@+id/iv_settings"

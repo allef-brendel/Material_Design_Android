@@ -64,7 +64,7 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
 
                 if(mList.size() == llm.findLastCompletelyVisibleItemPosition() + 1){
                 //if(mList.size() == max + 1){
-                    List<Personagens> listAux = ((MainActivity) getActivity()).getSetPersonagensList(10);
+                    List<Personagens> listAux = ((MainActivity) getActivity()).getSetPersonagensList(11);
 
                     for(int i = 0; i < listAux.size(); i ++){
                         adapter.addListItem(listAux.get(i), mList.size());
@@ -87,7 +87,7 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
        llm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
        mRecyclerView.setLayoutManager(llm);*/
 
-        mList = ((MainActivity)getActivity()).getSetPersonagensList(10);
+        mList = ((MainActivity)getActivity()).getSetPersonagensList(11);
         Personagens_Adapter adapter = new Personagens_Adapter(getActivity(),mList);
       //  adapter.setRecycleViewOnClickListinerHack(this);
         mRecyclerView.setAdapter(adapter);

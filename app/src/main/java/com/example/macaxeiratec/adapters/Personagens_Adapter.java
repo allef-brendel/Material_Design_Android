@@ -29,7 +29,7 @@ public class Personagens_Adapter extends RecyclerView.Adapter<Personagens_Adapte
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = mLayoutInflater.inflate(R.layout.item_personagens, parent, false);
+        View v = mLayoutInflater.inflate(R.layout.item_personagens_card, parent, false);
         MyViewHolder mvh = new MyViewHolder(v);
         return mvh;
     }

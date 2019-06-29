@@ -104,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public List<Personagens> getSetPersonagensList(int quant){
-        String[] nome = new String[]{"Naruto Uzumaki","Sasuke Uchiha","Sakura Haruno ","Kakashi Hatake","Shikamaru Nara","Sai Yamanaka","Ino Yamanaka","Maito Gai","Itachi Uchiha","Orochimaru"};
-        String[] clan = new String[]{"Uzumaki","Uchiha","Uchiha","Hatake","Nara","Yamanaka","Yamanaka","Maito","Uchiha","Desconhecido"};
-        int[] fotos = new int[]{R.drawable.naruto_foto,R.drawable.sasuke_foto,R.drawable.sakura_foto,R.drawable.kakashi_foto,R.drawable.shikamaru_foto,R.drawable.sai_foto,R.drawable.ino_foto,R.drawable.gai_foto,R.drawable.itachi_foto,R.drawable.orochimaru_foto};
+        String[] nome = new String[]{"Naruto Uzumaki","Sasuke Uchiha","Sakura Haruno ","Kakashi Hatake","Shikamaru Nara","Sai","Ino Yamanaka","Maito Gai","Itachi Uchiha","Orochimaru","Rock Lee"};
+        String[] clan = new String[]{"Uzumaki","Uchiha","Uchiha","Hatake","Nara","Yamanaka","Yamanaka","Desconhecido","Uchiha","Desconhecido","Lee"};
+        int[] fotos = new int[]{R.drawable.naruto_foto,R.drawable.sasuke_foto,R.drawable.sakura_foto,R.drawable.kakashi_foto,R.drawable.shikamaru_foto,R.drawable.sai_foto,R.drawable.ino_foto,R.drawable.gai_foto,R.drawable.itachi_foto,R.drawable.orochimaru_foto,R.drawable.lee_foto};
         List<Personagens> listAux = new ArrayList<>();
 
         for (int i = 0; i < quant; i++){
