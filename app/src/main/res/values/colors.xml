@@ -12,4 +12,7 @@
     <color name="colorSecondText">#999</color>
     <color name="colorLink">#1ea4f7</color>
     <color name="colorCardViwe">#212121</color>
+
+    <color name="colorFAB">#FF9800</color>
+    <color name="colorFabPressed">#F57C00</color>
 </resources>

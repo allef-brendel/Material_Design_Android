@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="@color/grey"
-    tools:context=".interfaces.MainActivity">
+    tools:context=".MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_main"
@@ -18,18 +19,96 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+    <FrameLayout
+        android:layout_below="@+id/tb_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/rl_fragment_container"
-        android:layout_below="@+id/tb_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/inc_tb_bottom">
-
     </RelativeLayout>
 
-    <include
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            fab:menu_icon="@drawable/car_news"
+            fab:menu_colorNormal="@color/colorFAB"
+            fab:menu_colorPressed="@color/colorFabPressed"
+            fab:menu_labels_ellipsize="end"
+            fab:menu_labels_singleLine="true">
+
+
+        <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_facebook_white"
+                fab:fab_label="@string/action_facebook"
+                app:fab_colorNormal="@color/colorFAB"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_google_plus_white"
+                fab:fab_label="@string/action_google_plus"
+                app:fab_colorNormal="@color/colorFAB"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_whatsapp_white"
+                fab:fab_label="@string/action_whatsapp"
+                app:fab_colorNormal="@color/colorFAB"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_linkedin_white"
+                fab:fab_label="@string/action_linkedin"
+                app:fab_colorNormal="@color/colorFAB" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_youtube_white"
+                fab:fab_label="@string/action_youtube"
+                app:fab_colorNormal="@color/colorFAB"/>
+
+        </com.github.clans.fab.FloatingActionMenu>
+
+        <!--com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/car_news"
+            fab:fab_colorNormal="@color/colorFAB"
+            fab:fab_colorPressed="@color/colorFabPressed"/-->
+
+
+    </FrameLayout>
+
+
+    <!--include
         android:id="@+id/inc_tb_bottom"
-        layout="@layout/toolbar_bottom"/>
+        layout="@layout/toolbar_bottom"/-->
 
 </RelativeLayout>
 
