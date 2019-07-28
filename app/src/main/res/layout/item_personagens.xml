@@ -23,6 +23,7 @@
         android:paddingRight="16dp"
         android:textSize="16sp" />
 
+
     <TextView
         android:textColor="@color/colorPrimarytext"
         android:layout_below="@+id/tv_nome"

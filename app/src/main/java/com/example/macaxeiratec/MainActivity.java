@@ -1,7 +1,6 @@
 package com.example.macaxeiratec;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +9,11 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Toast;
+
+import com.example.macaxeiratec.adapters.Gravador;
 import com.example.macaxeiratec.domain.Personagens;
 import com.example.macaxeiratec.fragments.PersonagensFragments;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -28,6 +30,9 @@ import com.mikepenz.materialdrawer.model.ToggleDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,11 +40,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private Toolbar mToolbarBottom;
     private Drawer navigationDrawerLeft;
-    private Drawer navigationDrawerRight;
     private AccountHeader headerNavigationLeft;
-    private int mPositionClicked;
+
+    private String[][] listaDados;
+    private Gravador gravador;
 
     private OnCheckedChangeListener mOnCheckedChangeListener = new OnCheckedChangeListener() {
         @Override
@@ -48,61 +53,28 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        criarPastaFile();
+        gravador=new Gravador();
 
+        listaDados = recuperarLista();
+        criarPastaFile();
+
+        // Gravador para salvar informaçoes dos quadrinhos
+        gravador.salvarInfoQuadrinhos(listaDados);
+        gravador.salvarQuantItens(listaDados.length);
+
+        // Toolbar da tela de listagem
         mToolbar = findViewById(R.id.tb_main);
-        mToolbar.setTitle("Konoha");
-        mToolbar.setSubtitle("Descrição dos ninjas");
-        mToolbar.setLogo(R.drawable.konoha_simbolo);
+        mToolbar.setTitle("    Marvel Comics");
+        mToolbar.setSubtitle("    Quadrinhos Marvel");
+        mToolbar.setLogo(R.drawable.marvel_simbolo);
         setSupportActionBar(mToolbar);
 
-      /*  mToolbarBottom = findViewById(R.id.inc_tb_bottom);
-        mToolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent it = null;
-
-                switch (menuItem.getItemId()) {
-                    case R.id.action_facebook:
-                        it = new Intent(Intent.ACTION_VIEW);
-                        it.setData(Uri.parse("http://www.facebook.com"));
-                        break;
-                    case R.id.action_youtube:
-                        it = new Intent(Intent.ACTION_VIEW);
-                        it.setData(Uri.parse("http://www.youtube.com"));
-                        break;
-                    case R.id.action_google_plus:
-                        it = new Intent(Intent.ACTION_VIEW);
-                        it.setData(Uri.parse("http://plus.google.com"));
-                        break;
-                    case R.id.action_linkedin:
-                        it = new Intent(Intent.ACTION_VIEW);
-                        it.setData(Uri.parse("http://www.linkedin.com"));
-                        break;
-                    case R.id.action_whatsapp:
-                        it = new Intent(Intent.ACTION_VIEW);
-                        it.setData(Uri.parse("http://www.whatsapp.com"));
-                        break;
-                }
-                startActivity(it);
-                return true;
-            }
-        });
-        mToolbarBottom.inflateMenu(R.menu.menu_bottom);
-
-        mToolbarBottom.findViewById(R.id.iv_settings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Botão Configurações Precionado", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
-        //  FRAGMENT
+        //  Fragment
         PersonagensFragments frag = (PersonagensFragments) getSupportFragmentManager().findFragmentByTag("person_frag");
         if (frag == null) {
             frag = new PersonagensFragments();
@@ -111,25 +83,25 @@ public class MainActivity extends AppCompatActivity {
             ft.commit();
         }
 
-        //HEADER
+        //Header do navigation Drawer
         headerNavigationLeft = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withCompactStyle(false)
                 .withSavedInstance(savedInstanceState)
                 //.withProfileImagesVisible(false)
                 .withThreeSmallProfileImages(true)
-                .withHeaderBackground(R.drawable.clan_uzumaki)
+                .withHeaderBackground(R.drawable.homemdeferro_capa)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Kakashi").withEmail("kakashi@gmail.com").withIcon(getResources().getDrawable(R.drawable.kakashi_foto)),
-                        new ProfileDrawerItem().withName("Naruto").withEmail("naruto@gmail.com").withIcon(getResources().getDrawable(R.drawable.naruto_foto)),
-                        new ProfileDrawerItem().withName("Sakura").withEmail("sakura@gmail.com").withIcon(getResources().getDrawable(R.drawable.sakura_foto)),
-                        new ProfileDrawerItem().withName("Sasuke").withEmail("sasuke@gmail.com").withIcon(getResources().getDrawable(R.drawable.sasuke_foto))
+                        new ProfileDrawerItem().withName("Homem de Ferro").withEmail("homemdeferro@gmail.com").withIcon(getResources().getDrawable(R.drawable.homemdeferro)),
+                        new ProfileDrawerItem().withName("Thor").withEmail("thor@gmail.com").withIcon(getResources().getDrawable(R.drawable.thor)),
+                        new ProfileDrawerItem().withName("Capitão America").withEmail("capitaoamerica@gmail.com").withIcon(getResources().getDrawable(R.drawable.capitao_america)),
+                        new ProfileDrawerItem().withName("Hulk").withEmail("hulk@gmail.com").withIcon(getResources().getDrawable(R.drawable.hulk))
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean current) {
                         Toast.makeText(MainActivity.this, "onProfileChanged: "+profile.getName(), Toast.LENGTH_SHORT).show();
-                        headerNavigationLeft.setBackgroundRes(R.drawable.clan_uchiha);
+                        headerNavigationLeft.setBackgroundRes(R.drawable.capitao_america_capa);
                         return false;
                     }
                 })
@@ -149,22 +121,11 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                       /*for(int cont = 0, tam = navigationDrawerLeft.getDrawerItems().size(); cont < tam; cont++){
-                            if (cont == mPositionClicked && mPositionClicked <= 3 ){
-                                PrimaryDrawerItem aux = (PrimaryDrawerItem) navigationDrawerLeft.getDrawerItems().get(cont);
-                                aux.withIcon(getResources().getDrawable(getCorrectDrawerIcon(cont,false)));
-                                break;
-                            }
-                        }
-                        if(position <= 3){
-                            ((PrimaryDrawerItem)drawerItem).withIcon(getResources().getDrawable(getCorrectDrawerIcon(position,true)));
-                        }
-                            mPositionClicked = position;
-                            navigationDrawerLeft.getAdapter().notifyAdapterDataSetChanged();*/
                         return false;
                     }
                 })
-                .withOnDrawerItemLongClickListener(new Drawer.OnDrawerItemLongClickListener() {
+                .withOnDrawerItemLongClickListener(
+                        new Drawer.OnDrawerItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(View view, int position, IDrawerItem drawerItem) {
                         Toast.makeText(MainActivity.this, "onItemLongClick: " + position, Toast.LENGTH_SHORT).show();
@@ -172,43 +133,42 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
-
-        navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("Vila da Folha").withIcon(getResources().getDrawable(R.drawable.car_selected_1)));
-        navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("Vila da Areia").withIcon(getResources().getDrawable(R.drawable.car_selected_2)));
+        navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("Todos Quadrinhos").withIcon(getResources().getDrawable(R.drawable.car_selected_4)));
         navigationDrawerLeft.addItem(new DividerDrawerItem());
-        navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("Vila da Névoa").withIcon(getResources().getDrawable(R.drawable.car_selected_3)));
-        navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("Vila da Chuva").withIcon(getResources().getDrawable(R.drawable.car_selected_4)));
+        navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("Quadrinhos Normais").withIcon(getResources().getDrawable(R.drawable.car_selected_2)));
+        navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("Quadrinhos Raros").withIcon(getResources().getDrawable(R.drawable.car_selected_3)));
         navigationDrawerLeft.addItem(new SectionDrawerItem().withName("Configurações").withTextColor((getResources().getColor(R.color.colorPrimarytext))));
         navigationDrawerLeft.addItem(new SwitchDrawerItem().withName("Notificação").withChecked(true).withOnCheckedChangeListener(mOnCheckedChangeListener));
         navigationDrawerLeft.addItem(new ToggleDrawerItem().withName("News").withChecked(true).withOnCheckedChangeListener(mOnCheckedChangeListener));
 
-        //END - RIGHT
-        /*navigationDrawerRight = new DrawerBuilder()
-                .withActivity(this)
-                //.withToolbar(mToolbar)
-                .withDisplayBelowStatusBar(false)
-                .withActionBarDrawerToggleAnimated(true)
-                .withDrawerGravity(Gravity.END)
-                .withSavedInstance(savedInstanceState)
-                .withSelectedItem(-1)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        Toast.makeText(MainActivity.this, "onItemClick: " + position, Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                })
-                .withOnDrawerItemLongClickListener(new Drawer.OnDrawerItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(View view, int position, IDrawerItem drawerItem) {
-                        Toast.makeText(MainActivity.this, "onItemLongClick: " + position, Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                })
-                .build();*/
-
     }
 
+    // Metodo que manda os dados para o Adapter
+    public List<Personagens> getSetPersonagensList(int quant){
+
+        String[] title = new String[listaDados.length];
+        String[] descricao = new String[listaDados.length];
+        String[] quantPaginas = new String[listaDados.length];
+        String[] precos = new String[listaDados.length];
+        int[] fotos = new int[]{R.drawable.quadrinho1,R.drawable.quadrinho2,R.drawable.quadrinho3,R.drawable.quadrinho4,R.drawable.quadrinho5,R.drawable.quadrinho6,R.drawable.quadrinho7,R.drawable.quadrinho8,R.drawable.quadrinho9,R.drawable.quadrinho10,R.drawable.quadrinho11,R.drawable.quadrinho12,R.drawable.quadrinho13,R.drawable.quadrinho14,R.drawable.quadrinho15,R.drawable.quadrinho16,R.drawable.quadrinho17,R.drawable.quadrinho18,R.drawable.quadrinho19,R.drawable.quadrinho20};
+
+        for (int i = 0; i<listaDados.length; i++){
+            title[i] = listaDados[i][0];
+            descricao[i] = listaDados[i][1];
+            precos[i] = listaDados[i][2];
+            quantPaginas[i] = listaDados[i][4];
+
+        }
+        List<Personagens> listAux = new ArrayList<>();
+
+        for (int i = 0; i < quant; i++){
+            Personagens personagens = new Personagens(listaDados[i][0], listaDados[i][2], fotos[i]);
+            listAux.add(personagens);
+        }
+        return listAux;
+    }
+
+    // Metodo para escolher o icone certo do drawer
     private int getCorrectDrawerIcon(int position, boolean isSelected){
         switch (position){
             case 0:
@@ -231,27 +191,39 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if(id == R.id.action_second_activity){
-            startActivity(new Intent(this, SecondActivity.class));
-        }
+            Toast.makeText(this, "Botão Configurações Precionado", Toast.LENGTH_SHORT).show();
 
         return super.onOptionsItemSelected(item);
     }
 
-    public List<Personagens> getSetPersonagensList(int quant){
-        String[] nome = new String[]{"Naruto Uzumaki","Sasuke Uchiha","Sakura Haruno ","Kakashi Hatake","Shikamaru Nara","Sai","Ino Yamanaka","Maito Gai","Itachi Uchiha","Orochimaru","Rock Lee"};
-        String[] clan = new String[]{"Uzumaki","Uchiha","Uchiha","Hatake","Nara","Yamanaka","Yamanaka","Desconhecido","Uchiha","Desconhecido","Lee"};
-        int[] fotos = new int[]{R.drawable.naruto_foto,R.drawable.sasuke_foto,R.drawable.sakura_foto,R.drawable.kakashi_foto,R.drawable.shikamaru_foto,R.drawable.sai_foto,R.drawable.ino_foto,R.drawable.gai_foto,R.drawable.itachi_foto,R.drawable.orochimaru_foto,R.drawable.lee_foto};
-        List<Personagens> listAux = new ArrayList<>();
-
-        for (int i = 0; i < quant; i++){
-            Personagens personagens = new Personagens(nome[i % nome.length], clan[i % clan.length], fotos[i % nome.length]);
-            listAux.add(personagens);
+    // Metodo para recuperar dados de CarregarDadosJSON
+    private String[][] recuperarLista(){
+        String[][] lista=new String[20][6];
+        for (int x=0;x<lista.length;x++){
+            lista[x][0]=getIntent().getStringExtra("title"+x);
+            lista[x][1]=getIntent().getStringExtra("descrição"+x);
+            lista[x][2]=getIntent().getStringExtra("preço"+x);
+            lista[x][3]=getIntent().getStringExtra("id"+x);
+            lista[x][4]=getIntent().getStringExtra("pag"+x);
+            lista[x][5]=getIntent().getStringExtra("thumbnails"+x);
         }
-        return listAux;
 
+        return lista;
+    }
+
+    // Cria o diretorio file
+    public void criarPastaFile(){
+        try {
+            FileOutputStream file=openFileOutput("teste.txt",MODE_PRIVATE);
+            String s="asd";
+            file.write(s.getBytes());
+            file.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

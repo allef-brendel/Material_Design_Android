@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.macaxeiratec.R;
 import com.example.macaxeiratec.domain.Personagens;
 import com.example.macaxeiratec.interfaces.RecycleViewOnClickListinerHack;
@@ -26,6 +25,7 @@ public class Personagens_Adapter extends RecyclerView.Adapter<Personagens_Adapte
         mLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    // Inflate do card View
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,11 +34,15 @@ public class Personagens_Adapter extends RecyclerView.Adapter<Personagens_Adapte
         return mvh;
     }
 
+    // Setando os itens no Card View
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
         holder.iv_personagem.setImageResource(mList.get(position).getFoto());
-        holder.tv_nome.setText(mList.get(position).getNome());
-        holder.tv_clan.setText(mList.get(position).getClan());
+        holder.tv_nome.setText(mList.get(position).getTitulo());
+        holder.tv_clan.setText(mList.get(position).getQuantPaginas());
+        holder.tv_preco.setText(mList.get(position).getPrecos());
+
     }
 
     @Override
@@ -46,32 +50,23 @@ public class Personagens_Adapter extends RecyclerView.Adapter<Personagens_Adapte
         return mList.size();
     }
 
-    public void setRecycleViewOnClickListinerHack(RecycleViewOnClickListinerHack r){
-        mRecycleViewOnClickListinerHack = r;
-    }
-
-    public void addListItem(Personagens personagens, int position){
-        mList.add(personagens);
-        notifyItemInserted(position);
-    }
-
-    public void removeListItem(int position){
-        mList.remove(position);
-        notifyItemRemoved(position);
-    }
-
+    // View Holder
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView iv_personagem;
         public TextView tv_nome;
         public TextView tv_clan;
+        public TextView tv_preco;
 
+
+        // View Holder
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             iv_personagem = itemView.findViewById(R.id.iv_personagem);
             tv_clan = itemView.findViewById(R.id.tv_clan);
             tv_nome = itemView.findViewById(R.id.tv_nome);
+            tv_preco = itemView.findViewById(R.id.tv_preco);
 
             itemView.setOnClickListener(this);
 

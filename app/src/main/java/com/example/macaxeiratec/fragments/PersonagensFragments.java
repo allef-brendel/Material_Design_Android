@@ -19,20 +19,22 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.macaxeiratec.R;
+import com.example.macaxeiratec.SecondActivity;
 import com.example.macaxeiratec.adapters.Personagens_Adapter;
 import com.example.macaxeiratec.domain.Personagens;
 import com.example.macaxeiratec.MainActivity;
 import com.example.macaxeiratec.interfaces.RecycleViewOnClickListinerHack;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-
 import java.util.List;
+
 
 public class PersonagensFragments extends Fragment implements RecycleViewOnClickListinerHack, View.OnClickListener {
 
+    public static final String TAG = "AQUI>> ";
+
     public RecyclerView mRecyclerView;
     public List<Personagens> mList;
-    //private FloatingActionButton fab;
     public FloatingActionMenu fab;
 
     @Nullable
@@ -40,6 +42,7 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personagens,container, false);
 
+        //RecyclerView
         mRecyclerView = view.findViewById(R.id.rv_fragment);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -48,6 +51,7 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
+            // OnScrolled para o Float Action Button desaparecer e aparecer
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -59,27 +63,6 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
                     fab.showMenuButton(true);
                 }
 
-                LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                //GridLayoutManager llm = (GridLayoutManager) mRecyclerView.getLayoutManager();
-
-               /* StaggeredGridLayoutManager llm = (StaggeredGridLayoutManager) mRecyclerView.getLayoutManager();
-                int[] aux = llm.findLastCompletelyVisibleItemPositions(null);
-                int max = -1;
-                for(int i = 0; i < aux.length;i++){
-                    max = aux[i] > max ? aux[i] : max;
-                }*/
-
-                Personagens_Adapter adapter = (Personagens_Adapter) mRecyclerView.getAdapter();
-
-
-                if(mList.size() == llm.findLastCompletelyVisibleItemPosition() + 1){
-                //if(mList.size() == max + 1){
-                    List<Personagens> listAux = ((MainActivity) getActivity()).getSetPersonagensList(11);
-
-                    for(int i = 0; i < listAux.size(); i ++){
-                        adapter.addListItem(listAux.get(i), mList.size());
-                    }
-                }
             }
         });
 
@@ -90,19 +73,13 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
         llm.setReverseLayout(false);
         mRecyclerView.setLayoutManager(llm);
 
-       /* GridLayoutManager llm = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL,false);
-        mRecyclerView.setLayoutManager(llm);*/
-
-       /*StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-       llm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-       mRecyclerView.setLayoutManager(llm);*/
-
-        mList = ((MainActivity)getActivity()).getSetPersonagensList(11);
+        mList = ((MainActivity)getActivity()).getSetPersonagensList(20);
         Personagens_Adapter adapter = new Personagens_Adapter(getActivity(),mList);
-      //  adapter.setRecycleViewOnClickListinerHack(this);
         mRecyclerView.setAdapter(adapter);
 
         fab = getActivity().findViewById(R.id.fab);
+
+        // Onclick para mostrar os itens do Float Action Button
         fab.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
             public void onMenuToggle(boolean opened) {
@@ -124,88 +101,43 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
         fab4.setOnClickListener(this);
         fab5.setOnClickListener(this);
 
-        /*fab = getActivity().findViewById(R.id.fab);
-        fab.attachToRecyclerView(mRecyclerView, new ScrollDirectionListener() {
-            @Override
-            public void onScrollDown() {
-
-            }
-
-            @Override
-            public void onScrollUp() {
-
-            }
-        },new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-
-                LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                //GridLayoutManager llm = (GridLayoutManager) mRecyclerView.getLayoutManager();
-
-               /* StaggeredGridLayoutManager llm = (StaggeredGridLayoutManager) mRecyclerView.getLayoutManager();
-                int[] aux = llm.findLastCompletelyVisibleItemPositions(null);
-                int max = -1;
-                for(int i = 0; i < aux.length;i++){
-                    max = aux[i] > max ? aux[i] : max;
-                }*/
-
-                /*Personagens_Adapter adapter = (Personagens_Adapter) mRecyclerView.getAdapter();
-
-
-                if(mList.size() == llm.findLastCompletelyVisibleItemPosition() + 1){
-                    //if(mList.size() == max + 1){
-                    List<Personagens> listAux = ((MainActivity) getActivity()).getSetPersonagensList(11);
-
-                    for(int i = 0; i < listAux.size(); i ++){
-                        adapter.addListItem(listAux.get(i), mList.size());
-                    }
-                }
-            }
-        });
-       fab.setOnClickListener(this);*/
-
         return view;
     }
+
+    //OnClick dos itens de listagem dos quadrinhos
     @Override
     public void onClickListiner(View view, int position) {
-       // Toast.makeText(getActivity(), "onClickListiner: "+position, Toast.LENGTH_SHORT).show();
-
-        /*Personagens_Adapter adapter = (Personagens_Adapter) mRecyclerView.getAdapter();
-        adapter.removeListItem(position);*/
 
         try{
             YoYo.with(Techniques.FadeIn)
                     .duration(700)
                     .playOn(view);
+
+            Intent intent = new Intent(getContext(), SecondActivity.class);
+            intent.putExtra("position",position);
+            startActivity(intent);
+
         }
         catch (Exception  e){
 
         }
     }
-
+    // OnLongPress dos itens de listagem dos quadrinhos
     public void onLongPressClickListiner(View view, int position) {
-       // Toast.makeText(getActivity(), "onLongPressClickListiner: "+position, Toast.LENGTH_SHORT).show();
 
         try{
             YoYo.with(Techniques.FadeOut)
                     .duration(700)
                     .playOn(view);
+
+            Toast.makeText(getContext(), "onLongPressClickListiner", Toast.LENGTH_SHORT).show();
         }
         catch (Exception  e){
 
         }
-
-        /*Personagens_Adapter adapter = (Personagens_Adapter) mRecyclerView.getAdapter();
-        adapter.removeListItem(position);*/
     }
 
+    // OnClick do Float Action Button
     @Override
     public void onClick(View v) {
         Intent it = null;
@@ -213,7 +145,7 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
         switch (v.getId()){
             case R.id.fab1:
                 it = new Intent(Intent.ACTION_VIEW);
-                it.setData(Uri.parse("http://www.facebook.com"));
+                it.setData(Uri.parse("https://www.facebook.com/MarvelBR/?brand_redir=6883542487"));
                 break;
             case R.id.fab2:
                 it = new Intent(Intent.ACTION_VIEW);
@@ -229,12 +161,13 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
                 break;
             case R.id.fab5:
                 it = new Intent(Intent.ACTION_VIEW);
-                it.setData(Uri.parse("http://www.youtube.com"));
+                it.setData(Uri.parse("https://www.youtube.com/user/MARVEL"));
                 break;
         }
         startActivity(it);
     }
 
+    // TouchListener do Recycler View
     private static class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListener{
 
         private Context mContex;
@@ -284,4 +217,5 @@ public class PersonagensFragments extends Fragment implements RecycleViewOnClick
 
         }
     }
+
 }
